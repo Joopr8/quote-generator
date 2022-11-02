@@ -7,18 +7,21 @@ const loader = document.getElementById("loader");
 
 let apiQuotes = [];
 
-const loading = () => {
+//Loading Spinner Show
+const showLoadingloading = () => {
   loader.hidden = false;
   quoteContainer.hidden = true;
 };
 
-const complete = () => {
+// Remove Loading Spinner
+const removeLoadingSpinner = () => {
   loader.hidden = true;
   quoteContainer.hidden = false;
 };
 
+// Get Quote From API
 async function getQuotes() {
-  loading();
+  showLoadingloading();
   const apiUrl = "https://type.fit/api/quotes";
   try {
     const response = await fetch(apiUrl);
@@ -31,19 +34,21 @@ async function getQuotes() {
 }
 
 function newQuote() {
-  loading();
+  showLoadingloading();
   const quote = apiQuotes[Math.floor(Math.random() * 1000)];
 
+  //Check if Author field is blank and replace it with 'Unknow'
   !quote.author
     ? (quoteAuthor.textContent = "Unknow")
     : (quoteAuthor.textContent = quote.author);
 
+  //Dynamically reduce font size for long quotes
   quote.text.length > 120
     ? quoteText.classList.add("long-quote")
     : quoteText.classList.remove("long-quote");
 
   quoteText.textContent = quote.text;
-  complete();
+  removeLoadingSpinner();
 }
 
 const tweerQuote = () => {
