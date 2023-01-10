@@ -51,6 +51,8 @@ async function getQuotes() {
 function newQuote() {
   showLoadingloading();
   const quote = apiQuotes[Math.floor(Math.random() * 1000)];
+  translateLanguages = ["en - GB"];
+  console.log(translateLanguages);
 
   //Check if Author field is blank and replace it with 'Unknow'
   !quote.author
@@ -64,7 +66,7 @@ function newQuote() {
 
   quoteText.textContent = quote.text;
   removeLoadingSpinner();
-  let translateLanguages = [];
+
   languageInput.value = "en-GB";
 }
 
@@ -76,12 +78,24 @@ const getLanguage = (e) => {
 
 const translateQoute = (quote, lang) => {
   translateLanguages.push(lang);
-  let oldLang = translateLanguages[0]
-    .substring(0, translateLanguages[0].indexOf("-"))
+  let oldLang = translateLanguages[translateLanguages.length - 2]
+    .substring(
+      0,
+      translateLanguages[translateLanguages.length - 2].indexOf("-")
+    )
     .replace(/\s/g, "");
-  let newLang = translateLanguages[1]
-    .substring(0, translateLanguages[1].indexOf("-"))
+  let newLang = translateLanguages[translateLanguages.length - 1]
+    .substring(
+      0,
+      translateLanguages[translateLanguages.length - 1].indexOf("-")
+    )
     .replace(/\s/g, "");
+
+  console.log(oldLang, newLang);
+  console.log(translateLanguages);
+
+  translateLanguages.length >= 3 ? translateLanguages.shift() : false;
+
   let apiUrl = `https://api.mymemory.translated.net/get?q=${quote}!&langpair=${oldLang}|${newLang}`;
   fetch(apiUrl)
     .then((res) => res.json())
@@ -95,7 +109,6 @@ const translateQoute = (quote, lang) => {
         quoteAuthor.innerHTML = "🙍";
       }
     });
-  translateLanguages.shift();
 };
 
 const tweerQuote = () => {
@@ -103,7 +116,8 @@ const tweerQuote = () => {
   window.open(twitterUrl, "_blank");
 };
 
-languageInput.addEventListener("change", getLanguage);
 newQuotetBtn.addEventListener("click", newQuote);
+languageInput.addEventListener("change", getLanguage);
 tweetBtn.addEventListener("click", tweerQuote);
+
 getQuotes();
