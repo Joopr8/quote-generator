@@ -87,7 +87,13 @@ const translateQoute = (quote, lang) => {
     .then((res) => res.json())
     .then((data) => {
       translatedText = data.responseData.translatedText;
-      quoteText.innerHTML = translatedText;
+      if (translatedText?.length > 1) {
+        quoteText.innerHTML = translatedText;
+      } else {
+        quoteText.innerHTML =
+          "Sorry i can't translate to that language, get a new quote 😢";
+        quoteAuthor.innerHTML = "🙍";
+      }
     });
   translateLanguages.shift();
 };
