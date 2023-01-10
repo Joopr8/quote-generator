@@ -31,15 +31,17 @@
         <span id="author"></span>
       </div>
       <div class="button-container">
-        <button class="twitter-button" id="twitter" title="Tweet This!">
-          <i class="fab fa-twitter"></i>
-        </button>
-        <button id="new-quote">New Quote</button>
+        <form id="form" action="/action_page.php">
+          <label for="language"></label>
+          <select id="language" name="languages"></select>
+        </form>
+        <div class="buttons">
+          <button class="twitter-button" id="twitter" title="Tweet This!">
+            <i class="fab fa-twitter"></i>
+          </button>
+          <button id="new-quote">New Quote</button>
+        </div>
       </div>
-      <form id="form" action="/action_page.php">
-        <label for="language">Choose a language</label>
-        <select id="language" name="languages"></select>
-      </form>
     </div>
     <div class="loader" id="loader"></div>
     <!-- <script -->

@@ -64,6 +64,8 @@ function newQuote() {
 
   quoteText.textContent = quote.text;
   removeLoadingSpinner();
+  let translateLanguages = [];
+  languageInput.value = "en-GB";
 }
 
 //Check Language Selected
@@ -80,16 +82,20 @@ const translateQoute = (quote, lang) => {
   let newLang = translateLanguages[1]
     .substring(0, translateLanguages[1].indexOf("-"))
     .replace(/\s/g, "");
-  console.log(oldLang, newLang);
   let apiUrl = `https://api.mymemory.translated.net/get?q=${quote}!&langpair=${oldLang}|${newLang}`;
   fetch(apiUrl)
     .then((res) => res.json())
     .then((data) => {
       translatedText = data.responseData.translatedText;
-      quoteText.innerHTML = translatedText;
+      if (translatedText?.length > 1) {
+        quoteText.innerHTML = translatedText;
+      } else {
+        quoteText.innerHTML =
+          "Sorry i can't translate to that language, get a new quote 😢";
+        quoteAuthor.innerHTML = "🙍";
+      }
     });
   translateLanguages.shift();
-  console.log(translateLanguages);
 };
 
 const tweerQuote = () => {
