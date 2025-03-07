@@ -1,3 +1,5 @@
+import { localQuotes } from "./quotes.js";
+
 const quoteContainer = document.getElementById("quote-container");
 const quoteText = document.getElementById("quote");
 const quoteAuthor = document.getElementById("author");
@@ -36,23 +38,26 @@ const removeLoadingSpinner = () => {
 
 // Get Quote From API
 async function getQuotes() {
-  showLoadingloading();
-  const apiUrl = "https://type.fit/api/quotes";
-  try {
-    const response = await fetch(apiUrl);
-    apiQuotes = await response.json();
-    newQuote();
-  } catch (error) {
-    console.log(error);
-  }
+  // showLoadingloading();
+  // const apiUrl = "https://type.fit/api/quotes";
+  // try {
+  //   const response = await fetch(apiUrl);
+  //   apiQuotes = await response.json();
+  //   newQuote();
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
+  apiQuotes = localQuotes;
+  console.log(apiQuotes);
   return apiQuotes;
 }
 
 function newQuote() {
   showLoadingloading();
-  const quote = apiQuotes[Math.floor(Math.random() * 1000)];
+  // const quote = apiQuotes[Math.floor(Math.random() * 1000)];
+  const quote = apiQuotes[0];
   translateLanguages = ["en - GB"];
-  console.log(translateLanguages);
 
   //Check if Author field is blank and replace it with 'Unknow'
   !quote.author

@@ -1,4 +1,4 @@
-export const localQuotes = [
+export default [
   {
     text: "Genius is one percent inspiration and ninety-nine percent perspiration.",
     author: "Thomas Edison",
