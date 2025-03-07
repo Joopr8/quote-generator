@@ -1,42 +1,68 @@
-import { useState } from "react";
-import QUOTES from "../data/quotes";
+import { useEffect, useState } from "react";
+// import QUOTES from "../data/quotes";
+import { fetchQuote } from "../utils/quoteService";
+
+interface Quote {
+  quote: string;
+  author: string;
+}
 
 export default function QuoteBox() {
-  const initialQuote = QUOTES[Math.round(Math.random() * QUOTES.length)].text;
+  const [newQuote, setNewQuote] = useState<Quote>({
+    quote: "",
+    author: "",
+  });
+  const [loading, setLoading] = useState(false);
 
-  const [newQuote, setNewQuote] = useState(initialQuote);
+  const getNewQuote = async () => {
+    setLoading(true);
+    try {
+      const newQuote = await fetchQuote();
+      setNewQuote(newQuote);
+    } catch (error) {
+      console.error("Error fetching quote:", error);
+    }
+    setLoading(false);
+  };
 
-  function handleNewQuote() {
-    const randomIndex = Math.floor(Math.random() * QUOTES.length);
-    setNewQuote(QUOTES[randomIndex].text);
-  }
+  useEffect(() => {
+    getNewQuote();
+  }, []);
+
   return (
     <>
-      <div className="quote-container" id="quote-container">
-        <div className="quote-text">
-          <i className="fas fa-quote-left"></i>
-          {newQuote}
-          <i className="fas fa-quote-right"></i>
-        </div>
-        <div className="quote-author">
-          <span id="author"></span>
-        </div>
-        <div className="button-container">
-          <form id="form" action="/action_page.php">
-            <label></label>
-            <select id="language" name="languages"></select>
-          </form>
-          <div className="buttons">
-            <button className="twitter-button" id="twitter" title="Tweet This!">
-              <i className="fab fa-twitter"></i>
-            </button>
-            <button onClick={handleNewQuote} id="new-quote">
-              New Quote
-            </button>
+      {loading ? (
+        <div className="loader" id="loader"></div>
+      ) : (
+        <div className="quote-container" id="quote-container">
+          <div className="quote-text">
+            <i className="fas fa-quote-left"></i>
+            <p> {newQuote.quote}</p>
+            <i className="fas fa-quote-right"></i>
+          </div>
+          <div className="quote-author">
+            <span id="author"></span>
+          </div>
+          <div className="button-container">
+            <form id="form" action="/action_page.php">
+              <label></label>
+              <select id="language" name="languages"></select>
+            </form>
+            <div className="buttons">
+              <button
+                className="twitter-button"
+                id="twitter"
+                title="Tweet This!"
+              >
+                <i className="fab fa-twitter"></i>
+              </button>
+              <button onClick={getNewQuote} id="new-quote">
+                New Quote
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="loader" id="loader"></div>
+      )}
     </>
   );
 }
