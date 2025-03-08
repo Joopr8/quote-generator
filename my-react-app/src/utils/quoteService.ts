@@ -3,7 +3,7 @@ export const fetchQuote = async (): Promise<{
   author: string;
 }> => {
   const API_URL = "https://api.api-ninjas.com/v1/quotes";
-  const API_KEY = "zADtg2OcQGmg5cXjqKW3tA==M6oR7q00NsgmLQhX"; // Replace with your actual API key
+  const API_KEY = import.meta.env.VITE_API_NINJAS_KEY;
 
   try {
     const response = await fetch(API_URL, {
