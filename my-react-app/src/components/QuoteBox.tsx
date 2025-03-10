@@ -32,9 +32,9 @@ export default function QuoteBox() {
   return (
     <>
       {loading ? (
-        <div className="loader" id="loader"></div>
+        <div className="loader"></div>
       ) : (
-        <div className="quote-container" id="quote-container">
+        <div className="quote-container">
           <div className="quote-text">
             <i className="fas fa-quote-left"></i>
             <p> {newQuote.quote}</p>
@@ -56,9 +56,7 @@ export default function QuoteBox() {
               >
                 <i className="fab fa-twitter"></i>
               </button>
-              <button onClick={getNewQuote} id="new-quote">
-                New Quote
-              </button>
+              <button onClick={getNewQuote}>New Quote</button>
             </div>
           </div>
         </div>
