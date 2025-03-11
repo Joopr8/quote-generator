@@ -1,29 +1,69 @@
 import { useEffect, useState } from "react";
-// import QUOTES from "../data/quotes";
 import { fetchQuote } from "../utils/quoteService";
+import { countries } from "../data/countries";
+import { fetchTranslation } from "../utils/translationService";
+import QuoteInfo from "./QuoteInfo";
 
-interface Quote {
+interface QuoteBase {
   quote: string;
   author: string;
 }
+
+export interface Quote extends QuoteBase {
+  language: string;
+  translatedText?: string;
+}
+
+const DEFAULT_LANGUAGE = "en-GB";
 
 export default function QuoteBox() {
   const [newQuote, setNewQuote] = useState<Quote>({
     quote: "",
     author: "",
+    language: DEFAULT_LANGUAGE,
   });
   const [loading, setLoading] = useState(false);
 
-  const getNewQuote = async () => {
+  async function getNewQuote() {
     setLoading(true);
     try {
       const newQuote = await fetchQuote();
-      setNewQuote(newQuote);
+      setNewQuote({
+        quote: newQuote.quote,
+        author: newQuote.author,
+        language: "en-GB",
+        translatedText: undefined,
+      });
     } catch (error) {
       console.error("Error fetching quote:", error);
     }
     setLoading(false);
-  };
+  }
+
+  async function handleNewLanguage(
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) {
+    const newLanguage = event.target.value;
+    setLoading(true);
+
+    try {
+      const translatedText = await fetchTranslation(
+        newQuote.quote,
+        newQuote.language,
+        newLanguage
+      );
+
+      // Then update the state
+      setNewQuote((prev) => ({
+        ...prev,
+        language: newLanguage,
+        translatedText: translatedText,
+      }));
+    } catch (error) {
+      console.error("Error fetching quote:", error);
+    }
+    setLoading(false);
+  }
 
   useEffect(() => {
     getNewQuote();
@@ -35,19 +75,23 @@ export default function QuoteBox() {
         <div className="loader"></div>
       ) : (
         <div className="quote-container">
-          <div className="quote-text">
-            <i className="fas fa-quote-left"></i>
-            <p> {newQuote.quote}</p>
-            <i className="fas fa-quote-right"></i>
-          </div>
-          <div className="quote-author">
-            <span id="author"></span>
-          </div>
+          <QuoteInfo quote={newQuote} />
           <div className="button-container">
-            <form id="form" action="/action_page.php">
-              <label></label>
-              <select id="language" name="languages"></select>
-            </form>
+            <label></label>
+            <select
+              id="language"
+              disabled={loading}
+              name="languages"
+              value={newQuote.language}
+              onChange={handleNewLanguage}
+            >
+              {Object.entries(countries).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value}
+                </option>
+              ))}
+            </select>
+
             <div className="buttons">
               <button
                 className="twitter-button"

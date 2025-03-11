@@ -1,4 +1,4 @@
-const countries = {
+export const countries = {
   "am-ET": "Amharic",
   "ar-SA": "Arabic",
   "be-BY": "Bielarus",
