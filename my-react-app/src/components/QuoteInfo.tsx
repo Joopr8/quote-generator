@@ -1,6 +1,10 @@
 import { Quote } from "./QuoteBox";
 
-export default function QuoteInfo({ quote }: { quote: Quote }) {
+interface QuoteInfoProps {
+  quote: Quote;
+}
+
+export default function QuoteInfo({ quote }: QuoteInfoProps) {
   return (
     <>
       <div className="quote-text">

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchQuote } from "../utils/quoteService";
-import { countries } from "../data/countries";
 import { fetchTranslation } from "../utils/translationService";
 import QuoteInfo from "./QuoteInfo";
+import QuoteControllers from "./QuoteControllers";
 
 interface QuoteBase {
   quote: string;
@@ -40,11 +40,9 @@ export default function QuoteBox() {
     setLoading(false);
   }
 
-  async function handleNewLanguage(
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) {
-    const newLanguage = event.target.value;
+  async function handleNewLanguage(newLanguage: string) {
     setLoading(true);
+    console.log(newLanguage);
 
     try {
       const translatedText = await fetchTranslation(
@@ -76,33 +74,12 @@ export default function QuoteBox() {
       ) : (
         <div className="quote-container">
           <QuoteInfo quote={newQuote} />
-          <div className="button-container">
-            <label></label>
-            <select
-              id="language"
-              disabled={loading}
-              name="languages"
-              value={newQuote.language}
-              onChange={handleNewLanguage}
-            >
-              {Object.entries(countries).map(([key, value]) => (
-                <option key={key} value={key}>
-                  {value}
-                </option>
-              ))}
-            </select>
-
-            <div className="buttons">
-              <button
-                className="twitter-button"
-                id="twitter"
-                title="Tweet This!"
-              >
-                <i className="fab fa-twitter"></i>
-              </button>
-              <button onClick={getNewQuote}>New Quote</button>
-            </div>
-          </div>
+          <QuoteControllers
+            quote={newQuote}
+            loading={loading}
+            onNewQuote={getNewQuote}
+            onNewLanguage={handleNewLanguage}
+          />
         </div>
       )}
     </>
