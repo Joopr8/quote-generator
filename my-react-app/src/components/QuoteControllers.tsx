@@ -8,12 +8,20 @@ interface QuoteControllersProps {
   onNewLanguage: (newLang: string) => void;
 }
 
+function shareOnTwitter(quote: string, author: string) {
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${quote} - ${author}`;
+  window.open(twitterUrl, "_blank");
+}
+
 export default function QuoteControllers({
   quote,
   loading,
   onNewQuote,
   onNewLanguage,
 }: QuoteControllersProps) {
+  const canQuoteBeShared =
+    quote.quote.length + quote.author.length > 280 ? false : true;
+
   return (
     <div className="button-container">
       <select
@@ -31,7 +39,12 @@ export default function QuoteControllers({
       </select>
 
       <div className="buttons">
-        <button className="twitter-button" title="Tweet This!">
+        <button
+          className="twitter-button"
+          title="Tweet This!"
+          disabled={!canQuoteBeShared}
+          onClick={() => shareOnTwitter(quote.quote, quote.author)}
+        >
           <i className="fab fa-twitter" aria-label="Share on Twitter"></i>
         </button>
         <button onClick={onNewQuote} disabled={loading}>

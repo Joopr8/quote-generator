@@ -13,7 +13,6 @@ export function useQuote() {
   });
   const [loading, setLoading] = useState(false);
 
-  // Fetch a new quote
   const getNewQuote = async () => {
     setLoading(true);
     try {

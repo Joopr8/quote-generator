@@ -17,7 +17,7 @@ export const fetchQuote = async (): Promise<{
     }
 
     const data = await response.json();
-    return data[0]; // API returns an array of quotes
+    return data[0];
   } catch (error) {
     console.error("Error fetching quote:", error);
     throw error;
