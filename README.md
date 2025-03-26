@@ -1,3 +1,6 @@
+# Intro
+A React-based Random Quote Generator that allows users to discover and display inspirational quotes dynamically. The app supports multi-language translations, features social media sharing (Twitter), and optimizes user experience with React-specific functionality like hooks, state management, and conditional rendering.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
